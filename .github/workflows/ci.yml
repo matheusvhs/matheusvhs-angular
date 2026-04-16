@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [master, develop]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   # ── Backend: testes + cobertura + SonarCloud ─────────────────────────────────
@@ -29,7 +29,7 @@ jobs:
         working-directory: backend
 
       - name: SonarCloud analysis
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: |
           ./mvnw sonar:sonar -B \
             -Dsonar.host.url=https://sonarcloud.io \
@@ -68,7 +68,7 @@ jobs:
         working-directory: frontend
 
       - name: SonarCloud analysis
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: SonarSource/sonarqube-scan-action@v6
         with:
           projectBaseDir: frontend
@@ -76,12 +76,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  # ── Docker build (apenas em push para main) ──────────────────────────────────
+  # ── Docker build (apenas em push para master) ──────────────────────────────────
   docker-build:
     name: Docker Build
     runs-on: ubuntu-latest
     needs: [backend-ci, frontend-ci]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
 
     steps:
       - uses: actions/checkout@v4
