@@ -67,7 +67,7 @@ jobs:
         working-directory: frontend
 
       - name: SonarCloud analysis
-        uses: SonarSource/sonarqube-scan-action@v4
+        uses: SonarSource/sonarqube-scan-action@v6
         with:
           projectBaseDir: frontend
         env:
